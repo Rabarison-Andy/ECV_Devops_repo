@@ -7,14 +7,18 @@ pipeline {
                 sh 'npm ci'
             }
         }
-        stage('Lint') {
-            steps {
-                sh 'npm run lint'
-            }
-        }
-        stage('Tests') {
-            steps {
-                sh 'npm test'
+        stage('Qualité') {
+            parallel {
+                stage('Lint') {
+                    steps {
+                        sh 'npm run lint'
+                    }
+                }
+                stage('Tests') {
+                    steps {
+                        sh 'npm run test:coverage'
+                    }
+                }
             }
         }
     }
