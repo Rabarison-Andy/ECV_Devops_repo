@@ -3,10 +3,10 @@ pipeline {
 
     options {
         disableConcurrentBuilds() //Interdit de lancer ce job 2 fois en même temps
-        parallelsAlwaysFailFats() //Dans un parallel, si l'un des threads échoue, stoppe les autres
+        parallelsAlwaysFailFast() //Dans un parallel, si l'un des threads échoue, stoppe les autres
     }
 
-    evnironment {
+    environment {
         IMAGE_NAME = "task_api"
     }
 
