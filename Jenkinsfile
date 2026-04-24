@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    options {
+        disableConcurrentBuilds() //Interdit de lancer ce job 2 fois en même temps
+        parallelsAlwaysFailFats() //Dans un parallel, si l'un des threads échoue, stoppe les autres
+    }
+
+    evnironment {
+        IMAGE_NAME = "task_api"
+    }
+
     stages {
         stage('Install') {
             steps {
@@ -24,7 +33,17 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t app .'
+                sh '''
+                docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+                '''
+            }
+        }
+
+
+        stage('Deploy') {
+            steps {
+                sh 'dpcker run -d -p 3002:3000 ${IMAGE_NAME}:${BUILD_NUMBER}'
             }
         }
     }
