@@ -43,7 +43,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'dpcker run -d -p 3002:3000 ${IMAGE_NAME}:${BUILD_NUMBER}'
+                sh 'docker run -d -p 3002:3000 ${IMAGE_NAME}:${BUILD_NUMBER}'
             }
         }
     }
